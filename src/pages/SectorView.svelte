@@ -2,7 +2,7 @@
   import { stockData, filters } from '../lib/stores.js'
   import { getICS } from '../lib/ics.js'
 
-  let sectorGroups = $derived(() => {
+  let sectorGroups = $derived.by(() => {
     const groups = {}
     for (const s of $stockData) {
       if (!groups[s.sector]) groups[s.sector] = []
@@ -20,7 +20,7 @@
 </script>
 
 <div class="sector-view">
-  {#each sectorGroups() as g}
+  {#each sectorGroups as g}
     <div class="card sector-card">
       <div class="sector-header">
         <div>

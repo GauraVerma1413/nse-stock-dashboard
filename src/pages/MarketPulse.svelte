@@ -17,7 +17,7 @@
 
   let alerts = $derived(unusualVolume($stockData, 2))
 
-  let sectorGroups = $derived(() => {
+  let sectorGroups = $derived.by(() => {
     const groups = {}
     for (const s of $stockData) {
       if (!groups[s.sector]) groups[s.sector] = { count: 0 }
@@ -99,7 +99,7 @@
   <section class="heatmap-section">
     <h2>Sector Heatmap</h2>
     <div class="heatmap">
-      {#each sectorGroups() as [sector, data]}
+      {#each sectorGroups as [sector, data]}
         <div class="sector-tile" style={`background:${sectorBg(0)};border:1px solid var(--border)`}>
           <div class="sector-name">{sector}</div>
           <div class="sector-count">{data.count} stocks</div>

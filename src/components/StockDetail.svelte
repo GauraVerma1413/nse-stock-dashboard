@@ -9,8 +9,8 @@
 
   let { stock, onAddWatchlist, onAddCompare } = $props()
 
-  let chartCanvas
-  let chartInstance
+  let chartCanvas = $state()
+  let chartInstance = $state()
 
   let ics = $derived(getICS(stock, $filters.risk, $filters.horizon))
 
