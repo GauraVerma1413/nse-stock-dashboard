@@ -1,0 +1,45 @@
+name: Fetch and Score NSE Stocks
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update-data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('scripts/requirements.txt') }}
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Fetch NSE data
+        run: python scripts/fetch_nse.py
+
+      - name: Score stocks
+        run: python scripts/score_stocks.py
+
+      - name: Build JSON
+        run: python scripts/build_json.py
+
+      - name: Commit updated data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/nse_screened.json
+          git diff --staged --quiet || git commit -m "chore: update NSE screened data [skip ci]"
+          git push
