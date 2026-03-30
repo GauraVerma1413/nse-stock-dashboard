@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Python
+data/raw_stocks.json
+data/scored_stocks.json
+__pycache__/
+*.pyc
